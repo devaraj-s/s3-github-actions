@@ -6,27 +6,28 @@ on:
       - feature*
 
 jobs:
+
   build:
     runs-on: ubuntu
     env:
       BUCKET_NAME: cfst-3457-805911778ca18aeb93119ab02-nonprodbucket-kyw124f23yiv
-  steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-    - name: Configure aws cli
-      uses: actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    - name: Set up node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 14
-    - name: build state
-      run: |
-        npm ci
-        npm run build
-    - name: Deploy files to the S3 bucket
-      run aws s3 cp public s3://${{ env.BUCKET_NAME }} --recursive --acl public-read
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Configure aws cli
+        uses: actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Set up node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: build state
+        run: |
+          npm ci
+          npm run build
+      - name: Deploy files to the S3 bucket
+        run aws s3 cp public s3://${{ env.BUCKET_NAME }} --recursive --acl public-read
       
 
