@@ -35,6 +35,7 @@ jobs:
   prod:
     runs-on: ubuntu-latest
     environment: prod
+    needs: build
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -54,6 +55,6 @@ jobs:
           npm run build
       - name: Deploy files to the S3 bucket
         run: |
-          aws s3 cp public s3://${{ env.BUCKET_NAME }} --recursive --acl public-read
+          aws s3 cp public s3://${{ secrets.BUCKET_NAME }} --recursive --acl public-read
       
 
